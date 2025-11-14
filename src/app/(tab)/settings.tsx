@@ -5,7 +5,7 @@ import { useThemeContext } from "@/contexts/theme-context";
 import { useUser } from "@/contexts/user-context";
 import { Bell, HelpCircle, LogOut, Moon, Shield, Sun, User } from "lucide-react-native";
 import { useEffect, useRef } from "react";
-import { Animated, Pressable, ScrollView, StyleSheet, Switch, Text, View } from "react-native";
+import { Animated, Pressable, ScrollView, Switch, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function SettingsScreen() {
@@ -59,40 +59,52 @@ export default function SettingsScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background, paddingTop: insets.top }]}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+    <View style={{ flex: 1, backgroundColor: colors.background, paddingTop: insets.top }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 16 }}>
         {/* Header */}
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Settings</Text>
+        <Text style={{ color: colors.text }} className="text-3xl font-bold mb-6">
+          Settings
+        </Text>
 
         {/* Profile Section */}
-        <View style={[styles.section, { backgroundColor: colors.surface }]}>
-          <View style={styles.profileHeader}>
-            <View style={[styles.avatar, { backgroundColor: colors.primary }]}>
-              <Text style={styles.avatarText}>{getInitials(user?.email)}</Text>
+        <View style={{ backgroundColor: colors.surface }} className="rounded-xl mb-4 overflow-hidden">
+          <View className="flex-row items-center p-4">
+            <View style={{ backgroundColor: colors.primary }} className="w-14 h-14 rounded-full justify-center items-center mr-3.5">
+              <Text style={{ color: "#fff" }} className="text-lg font-bold">
+                {getInitials(user?.email)}
+              </Text>
             </View>
-            <View style={styles.profileInfo}>
-              <Text style={[styles.profileEmail, { color: colors.text }]}>{user?.email}</Text>
-              <Text style={[styles.profileStatus, { color: colors.textSecondary }]}>Member</Text>
+            <View className="flex-1">
+              <Text style={{ color: colors.text }} className="text-base font-semibold mb-1">
+                {user?.email}
+              </Text>
+              <Text style={{ color: colors.textSecondary }} className="text-sm">
+                Member
+              </Text>
             </View>
           </View>
         </View>
 
         {/* Appearance Section */}
-        <View style={[styles.section, { backgroundColor: colors.surface }]}>
-          <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>Appearance</Text>
+        <View style={{ backgroundColor: colors.surface }} className="rounded-xl mb-4 overflow-hidden">
+          <View className="px-4 py-3">
+            <Text style={{ color: colors.text }} className="text-xs font-semibold uppercase tracking-wide">
+              Appearance
+            </Text>
           </View>
 
-          <Pressable style={styles.settingItem} onPress={toggleTheme}>
-            <View style={styles.settingLeft}>
+          <Pressable className="flex-row items-center justify-between px-4 py-3.5" onPress={toggleTheme}>
+            <View className="flex-row items-center flex-1">
               {theme === "dark" ? (
                 <Moon size={20} color={colors.textSecondary} />
               ) : (
                 <Sun size={20} color={colors.textSecondary} />
               )}
-              <View style={styles.settingText}>
-                <Text style={[styles.settingTitle, { color: colors.text }]}>Dark Mode</Text>
-                <Text style={[styles.settingSubtitle, { color: colors.textSecondary }]}>
+              <View className="ml-3 flex-1">
+                <Text style={{ color: colors.text }} className="text-base font-medium mb-0.5">
+                  Dark Mode
+                </Text>
+                <Text style={{ color: colors.textSecondary }} className="text-xs">
                   {theme === "dark" ? "Dark theme enabled" : "Light theme enabled"}
                 </Text>
               </View>
@@ -107,25 +119,29 @@ export default function SettingsScreen() {
         </View>
 
         {/* General Settings */}
-        <View style={[styles.section, { backgroundColor: colors.surface }]}>
-          <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>General</Text>
+        <View style={{ backgroundColor: colors.surface }} className="rounded-xl mb-4 overflow-hidden">
+          <View className="px-4 py-3">
+            <Text style={{ color: colors.text }} className="text-xs font-semibold uppercase tracking-wide">
+              General
+            </Text>
           </View>
 
           {settingsItems.map((item, index) => (
             <Pressable
               key={item.id}
-              style={[
-                styles.settingItem,
-                index !== settingsItems.length - 1 && [styles.settingItemBorder, { borderColor: colors.border }],
-              ]}
+              className="flex-row items-center justify-between px-4 py-3.5"
+              style={index !== settingsItems.length - 1 ? { borderBottomWidth: 1, borderBottomColor: colors.border } : {}}
               onPress={item.onPress}
             >
-              <View style={styles.settingLeft}>
+              <View className="flex-row items-center flex-1">
                 <item.icon size={20} color={colors.textSecondary} />
-                <View style={styles.settingText}>
-                  <Text style={[styles.settingTitle, { color: colors.text }]}>{item.title}</Text>
-                  <Text style={[styles.settingSubtitle, { color: colors.textSecondary }]}>{item.subtitle}</Text>
+                <View className="ml-3 flex-1">
+                  <Text style={{ color: colors.text }} className="text-base font-medium mb-0.5">
+                    {item.title}
+                  </Text>
+                  <Text style={{ color: colors.textSecondary }} className="text-xs">
+                    {item.subtitle}
+                  </Text>
                 </View>
               </View>
             </Pressable>
@@ -133,116 +149,26 @@ export default function SettingsScreen() {
         </View>
 
         {/* Danger Zone */}
-        <View style={[styles.section, { backgroundColor: colors.surface }]}>
-          <Pressable style={styles.settingItem} onPress={signOut}>
-            <View style={styles.settingLeft}>
+        <View style={{ backgroundColor: colors.surface }} className="rounded-xl mb-4 overflow-hidden">
+          <Pressable className="flex-row items-center justify-between px-4 py-3.5" onPress={signOut}>
+            <View className="flex-row items-center flex-1">
               <LogOut size={20} color={colors.error} />
-              <View style={styles.settingText}>
-                <Text style={[styles.settingTitle, { color: colors.error }]}>Sign Out</Text>
+              <View className="ml-3 flex-1">
+                <Text style={{ color: colors.error }} className="text-base font-medium">
+                  Sign Out
+                </Text>
               </View>
             </View>
           </Pressable>
         </View>
 
         {/* Footer */}
-        <View style={styles.footer}>
-          <Text style={[styles.footerText, { color: colors.textSecondary }]}>App v1.0.0</Text>
+        <View className="items-center py-6">
+          <Text style={{ color: colors.textSecondary }} className="text-xs font-medium">
+            App v1.0.0
+          </Text>
         </View>
       </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-  },
-  headerTitle: {
-    fontSize: 28,
-    fontWeight: "700",
-    marginBottom: 24,
-  },
-  section: {
-    borderRadius: 12,
-    marginBottom: 16,
-    overflow: "hidden",
-  },
-  sectionHeader: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: "600",
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
-  },
-  profileHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-  },
-  avatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 14,
-  },
-  avatarText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "700",
-  },
-  profileInfo: {
-    flex: 1,
-  },
-  profileEmail: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginBottom: 4,
-  },
-  profileStatus: {
-    fontSize: 13,
-  },
-  settingItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-  },
-  settingItemBorder: {
-    borderBottomWidth: 1,
-  },
-  settingLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-  },
-  settingText: {
-    marginLeft: 12,
-    flex: 1,
-  },
-  settingTitle: {
-    fontSize: 15,
-    fontWeight: "500",
-    marginBottom: 2,
-  },
-  settingSubtitle: {
-    fontSize: 12,
-  },
-  footer: {
-    alignItems: "center",
-    paddingVertical: 24,
-  },
-  footerText: {
-    fontSize: 12,
-    fontWeight: "500",
-  },
-});

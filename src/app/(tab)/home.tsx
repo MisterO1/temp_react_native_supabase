@@ -37,7 +37,7 @@ export default function HomeScreen() {
   ];
 
   return (
-    <View style={{ backgroundColor: colors.background }} className="flex-1">
+    <View style={{ backgroundColor: colors.background, flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 16, paddingTop: insets.top }}>
         {/* Welcome Section */}
         <View className="mb-8">
@@ -57,8 +57,8 @@ export default function HomeScreen() {
           <Text style={{ color: colors.textSecondary }} className="text-base leading-6 mb-4">
             This is a starter template designed to accelerate your React Native development with a solid foundation.
           </Text>
-          <View className="bg-opacity-10 rounded-lg p-3" style={{ backgroundColor: colors.primary }}>
-            <Text style={{ color: colors.primary }} className="text-xs font-semibold">
+          <View style={{ backgroundColor: colors.primary }} className="rounded-lg p-3">
+            <Text style={{ color: colors.primary }} className="text-xs font-semibold opacity-80">
               ✨ Perfect for quick project startup
             </Text>
           </View>
@@ -71,11 +71,7 @@ export default function HomeScreen() {
           </Text>
 
           {features.map((feature, index) => (
-            <View
-              key={index}
-              style={{ backgroundColor: colors.surface }}
-              className="rounded-xl p-4 mb-3 flex-row items-start"
-            >
+            <View key={index} style={{ backgroundColor: colors.surface }} className="rounded-xl p-4 mb-3 flex-row items-start">
               <View style={{ backgroundColor: colors.primary }} className="w-12 h-12 rounded-lg justify-center items-center mr-4">
                 <feature.icon size={24} color="#fff" />
               </View>

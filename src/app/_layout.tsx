@@ -1,13 +1,13 @@
 // src/app/_layout.tsx
+import { AuthProvider, useAuth } from "@/contexts/auth-context";
+import { ThemeProvider, useThemeContext } from "@/contexts/theme-context";
+import { UserProvider } from "@/contexts/user-context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Redirect, Slot, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
+import { StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
-import { AuthProvider, useAuth } from "@/contexts/auth-context";
-import { ThemeProvider } from "@/contexts/theme-context";
-import { UserProvider } from "@/contexts/user-context";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -17,6 +17,7 @@ function RootInner() {
   const { session, loading } = useAuth();
   const segments = useSegments();
   const [ready, setReady] = useState(false);
+  const { theme } = useThemeContext();
 
   useEffect(() => {
     let mounted = true;
@@ -47,7 +48,15 @@ function RootInner() {
     return <Redirect href="/(tab)/home" />;
   }
 
-  return <Slot />;
+  return (
+    <>
+      <StatusBar
+        barStyle={theme == "dark" ? "light-content" : "dark-content"}
+        backgroundColor={theme == "dark" ? "#000000" : "#FFFFFF"}
+      />
+      <Slot />
+    </>
+  );
 }
 
 export default function RootLayout() {

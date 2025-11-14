@@ -1,5 +1,8 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
+#file
+src/utils/supabase.ts
+
 # dependencies
 node_modules/
 
@@ -32,11 +35,10 @@ yarn-error.*
 
 # local env files
 .env*.local
+.env
 
 # typescript
 *.tsbuildinfo
-
-app-example
 
 # generated native folders
 /ios

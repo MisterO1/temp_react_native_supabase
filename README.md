@@ -1,50 +1,61 @@
-# Welcome to your Expo app 👋
+# temp_react_native_supabase
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Petit template React Native + Expo pré-configuré avec Supabase (auth), theming (light/dark), et quelques écrans (Home, Settings, Auth). Ce README donne l'essentiel pour démarrer rapidement.
 
-## Get started
+## Prérequis
+- Node 18+ / npm ou Yarn
+- Expo CLI (optionnel) : npm install -g expo-cli
+- Compte Supabase
 
-1. Install dependencies
+## Installation
+1. Cloner le repo
+2. Installer les dépendances
+   - npm install
+   - ou yarn
 
-   ```bash
-   npm install
-   ```
+## Variables d'environnement
+Créez un fichier `.env` (ou configurez vos secrets selon votre flux CI) avec au minimum :
+- SUPABASE_URL=https://your-project.supabase.co
+- SUPABASE_ANON_KEY=your-anon-key
 
-2. Start the app
+Ces variables sont utilisées par `src/utils/supabase`.
 
-   ```bash
-   npx expo start
-   ```
+## Lancement en dev
+- expo start
+- ou npm run start / yarn start
+Pour lancer sur un appareil : utilisez l'app Expo Go ou un simulateur.
 
-In the output, you'll find options to open the app in a
+## Authentification & OAuth (Google)
+- Email/password : déjà géré par l'écran Auth (`src/app/auth/index.tsx`).
+- Google OAuth : le bouton "Continuer avec Google" déclenche `supabase.auth.signInWithOAuth({ provider: "google" })`.
+  - Dans le dashboard Supabase, activez Google sous Authentication > Providers.
+  - Ajoutez les redirect URLs nécessaires (Expo : scheme://redirect, ou votre URL d'application).
+  - En React Native + Expo, vous devrez parfois configurer `app.json` / `expo` scheme et `authSession` pour le flow OAuth selon votre setup.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Thème
+- Le contexte thème se trouve dans `src/contexts/theme-context.tsx`.
+- Thèmes définis dans `src/theme/colors.ts`.
+- Toggle thème disponible dans l'écran Settings et header de l'écran Auth.
+- Le choix est sauvegardé dans AsyncStorage.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Structure importante
+- src/app — écrans (auth, home, settings, etc.)
+- src/contexts — theme-context, auth-context, user-context
+- src/theme — light/dark palettes
+- src/utils/supabase — client Supabase
+- src/components — (si présents) composants réutilisables
 
-## Get a fresh project
+## Personnalisation rapide
+- Couleurs : modifier `src/theme/colors.ts`.
+- Auth flows : `src/app/auth/index.tsx` (email/password, OAuth).
+- Ajouter écran : créer dossier/route dans `src/app`.
 
-When you're ready, run:
+## Débogage / astuces
+- Si OAuth ouvre une page blanche : vérifier redirect URI / scheme et la configuration dans Supabase.
+- Problèmes d'apparence sur la status bar : tous les écrans utilisent SafeAreaInsets et le contexte theme.
+- Vérifier la console Metro / logs pour erreurs runtime.
 
-```bash
-npm run reset-project
-```
+## Contribuer
+- Fork → branch → PR. Garder les changements isolés (thème, auth, nouvelle feature).
+- Respecter TypeScript et conventions du projet.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.

@@ -23,7 +23,8 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "bundler": "metro"
     },
     "plugins": [
       "expo-router",
@@ -44,5 +45,9 @@
       "typedRoutes": true,
       "reactCompiler": true
     }
+    // "extra": {
+    //   "supabaseUrl": "https://xxxxx.supabase.co",
+    //   "supabaseAnonKey": "eyxxxxxxxxxxx"
+    // }
   }
 }

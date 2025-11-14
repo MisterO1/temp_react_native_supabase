@@ -1,4 +1,3 @@
-// src/contexts/theme-context.tsx
 import { ColorScheme, darkTheme, lightTheme } from "@/theme/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useContext, useEffect, useState } from "react";

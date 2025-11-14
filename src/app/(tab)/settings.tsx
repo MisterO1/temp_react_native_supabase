@@ -3,7 +3,7 @@
 import { useAuth } from "@/contexts/auth-context";
 import { useThemeContext } from "@/contexts/theme-context";
 import { useUser } from "@/contexts/user-context";
-import { Bell, HelpCircle, LogOut, Moon, Shield, Sun, User } from "lucide-react-native";
+import { Bell, HelpCircle, Moon, Shield, Sun, User } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { Animated, Pressable, ScrollView, Switch, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -29,6 +29,7 @@ export default function SettingsScreen() {
       title: "Profile",
       subtitle: "Manage your account",
       icon: User,
+      accent: colors.primary,
       onPress: () => {},
     },
     {
@@ -36,6 +37,7 @@ export default function SettingsScreen() {
       title: "Notifications",
       subtitle: "Reminders and updates",
       icon: Bell,
+      accent: colors.secondary,
       onPress: () => {},
     },
     {
@@ -43,6 +45,7 @@ export default function SettingsScreen() {
       title: "Privacy & Security",
       subtitle: "Data and privacy settings",
       icon: Shield,
+      accent: colors.primaryDark ?? colors.primary,
       onPress: () => {},
     },
     {
@@ -50,6 +53,7 @@ export default function SettingsScreen() {
       title: "Help & Support",
       subtitle: "Get help and contact us",
       icon: HelpCircle,
+      accent: colors.secondaryDark ?? colors.secondary,
       onPress: () => {},
     },
   ];
@@ -60,55 +64,103 @@ export default function SettingsScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.background, paddingTop: insets.top }}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 16 }}>
-        {/* Header */}
-        <Text style={{ color: colors.text }} className="text-3xl font-bold mb-6">
-          Settings
-        </Text>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 20 }}>
+        {/* Top header */}
+        <View style={{ marginBottom: 16, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+          <Text style={{ color: colors.text, fontSize: 28, fontWeight: "800" }}>Settings</Text>
+        </View>
 
-        {/* Profile Section */}
-        <View style={{ backgroundColor: colors.surface }} className="rounded-xl mb-4 overflow-hidden">
-          <View className="flex-row items-center p-4">
-            <View style={{ backgroundColor: colors.primary }} className="w-14 h-14 rounded-full justify-center items-center mr-3.5">
-              <Text style={{ color: "#fff" }} className="text-lg font-bold">
-                {getInitials(user?.email)}
-              </Text>
-            </View>
-            <View className="flex-1">
-              <Text style={{ color: colors.text }} className="text-base font-semibold mb-1">
-                {user?.email}
-              </Text>
-              <Text style={{ color: colors.textSecondary }} className="text-sm">
-                Member
-              </Text>
+        {/* Profile hero */}
+        <View
+          style={{
+            backgroundColor: colors.surface,
+            borderRadius: 16,
+            padding: 16,
+            marginBottom: 16,
+            shadowColor: "#000",
+            shadowOpacity: 0.04,
+            shadowOffset: { width: 0, height: 8 },
+            shadowRadius: 18,
+            elevation: 3,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              width: 76,
+              height: 76,
+              borderRadius: 18,
+              backgroundColor: colors.primary,
+              justifyContent: "center",
+              alignItems: "center",
+              marginRight: 14,
+            }}
+          >
+            <Text style={{ color: "#fff", fontSize: 32, fontWeight: "900" }}>{getInitials(user?.email)}</Text>
+          </View>
+
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: colors.text, fontSize: 18, fontWeight: "800" }}>{user?.email}</Text>
+            <Text style={{ color: colors.textSecondary, marginTop: 4 }}>Member — Premium</Text>
+
+            <View style={{ flexDirection: "row", marginTop: 12 }}>
+              <Pressable
+                style={{
+                  backgroundColor: colors.primary,
+                  paddingVertical: 8,
+                  paddingHorizontal: 12,
+                  borderRadius: 10,
+                  marginRight: 8,
+                }}
+              >
+                <Text style={{ color: "#fff", fontWeight: "700" }}>Manage account</Text>
+              </Pressable>
+
+              <Pressable
+                style={{
+                  backgroundColor: colors.background,
+                  borderWidth: 1,
+                  borderColor: colors.border,
+                  paddingVertical: 8,
+                  paddingHorizontal: 12,
+                  borderRadius: 10,
+                }}
+              >
+                <Text style={{ color: colors.text, fontWeight: "700" }}>Invite</Text>
+              </Pressable>
             </View>
           </View>
         </View>
 
         {/* Appearance Section */}
-        <View style={{ backgroundColor: colors.surface }} className="rounded-xl mb-4 overflow-hidden">
-          <View className="px-4 py-3">
-            <Text style={{ color: colors.text }} className="text-xs font-semibold uppercase tracking-wide">
+        <View style={{ backgroundColor: colors.surface, borderRadius: 14, paddingVertical: 6, marginBottom: 14 }}>
+          <View style={{ paddingHorizontal: 12, paddingVertical: 10 }}>
+            <Text style={{ color: colors.text, fontSize: 12, fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.6 }}>
               Appearance
             </Text>
           </View>
 
-          <Pressable className="flex-row items-center justify-between px-4 py-3.5" onPress={toggleTheme}>
-            <View className="flex-row items-center flex-1">
-              {theme === "dark" ? (
-                <Moon size={20} color={colors.textSecondary} />
-              ) : (
-                <Sun size={20} color={colors.textSecondary} />
-              )}
-              <View className="ml-3 flex-1">
-                <Text style={{ color: colors.text }} className="text-base font-medium mb-0.5">
-                  Dark Mode
-                </Text>
-                <Text style={{ color: colors.textSecondary }} className="text-xs">
-                  {theme === "dark" ? "Dark theme enabled" : "Light theme enabled"}
-                </Text>
+          <Pressable
+            onPress={toggleTheme}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingHorizontal: 12,
+              paddingVertical: 14,
+            }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: theme === "dark" ? colors.primary : colors.secondary, justifyContent: "center", alignItems: "center", marginRight: 12 }}>
+                {theme === "dark" ? <Moon size={18} color="#fff" /> : <Sun size={18} color="#fff" />}
+              </View>
+              <View>
+                <Text style={{ color: colors.text, fontWeight: "700", fontSize: 15 }}>Dark Mode</Text>
+                <Text style={{ color: colors.textSecondary }}>{theme === "dark" ? "Activated" : "Deactivated"}</Text>
               </View>
             </View>
+
             <Switch
               value={theme === "dark"}
               onValueChange={toggleTheme}
@@ -118,55 +170,61 @@ export default function SettingsScreen() {
           </Pressable>
         </View>
 
-        {/* General Settings */}
-        <View style={{ backgroundColor: colors.surface }} className="rounded-xl mb-4 overflow-hidden">
-          <View className="px-4 py-3">
-            <Text style={{ color: colors.text }} className="text-xs font-semibold uppercase tracking-wide">
-              General
-            </Text>
+        {/* General section with accent icons */}
+        <View style={{ backgroundColor: colors.surface, borderRadius: 14, paddingVertical: 6, marginBottom: 14 }}>
+          <View style={{ paddingHorizontal: 12, paddingVertical: 10 }}>
+            <Text style={{ color: colors.text, fontSize: 12, fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.6 }}>General</Text>
           </View>
 
-          {settingsItems.map((item, index) => (
-            <Pressable
-              key={item.id}
-              className="flex-row items-center justify-between px-4 py-3.5"
-              style={index !== settingsItems.length - 1 ? { borderBottomWidth: 1, borderBottomColor: colors.border } : {}}
-              onPress={item.onPress}
-            >
-              <View className="flex-row items-center flex-1">
-                <item.icon size={20} color={colors.textSecondary} />
-                <View className="ml-3 flex-1">
-                  <Text style={{ color: colors.text }} className="text-base font-medium mb-0.5">
-                    {item.title}
-                  </Text>
-                  <Text style={{ color: colors.textSecondary }} className="text-xs">
-                    {item.subtitle}
-                  </Text>
+          {settingsItems.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <Pressable
+                key={item.id}
+                onPress={item.onPress}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  paddingHorizontal: 12,
+                  paddingVertical: 14,
+                  borderBottomWidth: idx !== settingsItems.length - 1 ? 1 : 0,
+                  borderBottomColor: colors.border,
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: item.accent, justifyContent: "center", alignItems: "center", marginRight: 12 }}>
+                    <Icon size={18} color="#fff" />
+                  </View>
+                  <View style={{ maxWidth: "72%" }}>
+                    <Text style={{ color: colors.text, fontWeight: "700" }}>{item.title}</Text>
+                    <Text style={{ color: colors.textSecondary, marginTop: 2 }}>{item.subtitle}</Text>
+                  </View>
                 </View>
-              </View>
-            </Pressable>
-          ))}
+              </Pressable>
+            );
+          })}
         </View>
 
-        {/* Danger Zone */}
-        <View style={{ backgroundColor: colors.surface }} className="rounded-xl mb-4 overflow-hidden">
-          <Pressable className="flex-row items-center justify-between px-4 py-3.5" onPress={signOut}>
-            <View className="flex-row items-center flex-1">
-              <LogOut size={20} color={colors.error} />
-              <View className="ml-3 flex-1">
-                <Text style={{ color: colors.error }} className="text-base font-medium">
-                  Sign Out
-                </Text>
-              </View>
-            </View>
+        {/* Danger / Sign out */}
+        <View style={{ backgroundColor: colors.surface, borderRadius: 14, padding: 12, marginBottom: 20 }}>
+          <Text style={{ color: colors.textSecondary, marginBottom: 8 }}>Danger Zone</Text>
+          <Pressable
+            onPress={signOut}
+            style={{
+              backgroundColor: colors.error,
+              paddingVertical: 12,
+              borderRadius: 12,
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: "#fff", fontWeight: "800" }}>Sign Out</Text>
           </Pressable>
         </View>
 
         {/* Footer */}
-        <View className="items-center py-6">
-          <Text style={{ color: colors.textSecondary }} className="text-xs font-medium">
-            App v1.0.0
-          </Text>
+        <View style={{ alignItems: "center", paddingVertical: 20 }}>
+          <Text style={{ color: colors.textSecondary, fontSize: 12 }}>App v1.0.0</Text>
         </View>
       </ScrollView>
     </View>
